@@ -4,19 +4,19 @@
 
 #include <sepol/policydb/policydb.h>
 
-
-#ifdef DARWIN
-#include <sys/types.h>
-#include <machine/endian.h>
-#else
-#include <byteswap.h>
-#include <endian.h>
+#if defined(__BIONIC__) || !defined(DARWIN)
+  #include <byteswap.h>
+  #include <endian.h>
+#else // defined(DARWIN)
+  #include <sys/types.h>
+  #include <machine/endian.h>
 #endif
+
 
 #include <errno.h>
 #include <dso.h>
 
-#ifdef DARWIN
+#if !defined(__BIONIC__) && defined(DARWIN)
 #define __BYTE_ORDER  BYTE_ORDER
 #define __LITTLE_ENDIAN  LITTLE_ENDIAN
 #endif
